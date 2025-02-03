@@ -1,0 +1,34 @@
+#include<bits/stdc++.h>
+using namespace std;
+class CurveFitting{
+private:
+    double m,n,c;
+ public:
+   void fitcurve(double a[],double b[],int n){
+    double sumX=0,sumY=0,sumXY=0,sumX2=0;
+    for(int i=0; i<n; i++){
+        sumX=sumX+a[i];
+        sumY=sumY+b[i];
+        sumXY=sumXY+a[i]*b[i];
+        sumX2=sumX2+a[i]*a[i];
+    }
+    m=(sumX*sumY-n*sumXY)/(sumX*sumX-n*sumX2);
+    c=(sumY-m*sumX)/n;
+    cout << "Fitted line: y = " << m << "x + " << c << endl;
+
+   }
+
+};
+int main(){
+    CurveFitting CurveFitting;
+    double x[100],y[100];
+    int n;
+   cout<<"Enter the total data points"<<endl;
+        cin>>n;
+        cout<<"Enter the x & y value"<<endl;
+        for(int i=0; i<n; i++){
+            cin>>x[i];
+            cin>>y[i];
+        }
+    CurveFitting.fitcurve(x,y,n);
+}
