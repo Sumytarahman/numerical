@@ -1,0 +1,64 @@
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+
+class BisectionMethod {
+public:
+    BisectionMethod(double tolerance, int maxIterations)
+        : tolerance(tolerance), maxIterations(maxIterations), iteration(1) {
+        // Set a predefined interval for this equation
+        a = 1.0; // Start interval
+        b = 3.0; // End interval
+    }
+
+    double findRoot() {
+        double c = 0.0;  // Initialize c to avoid potential garbage value.
+        for (int i = 0; i < maxIterations; ++i) {
+            c = (a + b) / 2; // Midpoint of interval [a, b]
+
+            // Display current iteration and midpoint
+            cout << "Iteration " << iteration << ": x = " << fixed << setprecision(6) << c << endl;
+            iteration++;
+
+            double f_c = func(c);
+
+            // Check if the function value at c is close enough to zero or if the interval is small enough
+            if (fabs(f_c) < tolerance || (b - a) / 2 < tolerance) {
+                return c;
+            }
+
+            // Narrow the interval
+            if (func(a) * f_c < 0) {
+                b = c; // Root is in the left subinterval
+            } else {
+                a = c; // Root is in the right subinterval
+            }
+        }
+        return c; // If maxIterations are reached, return the last midpoint
+    }
+
+private:
+    double a, b, tolerance;
+    int iteration, maxIterations;
+
+    double func(double x) {
+        return pow(x, 4) - x - 10; // Function: f(x) = x^4 - x - 10
+    }
+};
+
+int main() {
+    double tolerance = 0.001;  // Desired precision (correct to 3 decimal places)
+    int maxIterations = 100;   // Maximum number of iterations
+
+    // Create BisectionMethod object
+    BisectionMethod bisection(tolerance, maxIterations);
+
+    // Find the root using the Bisection method
+    double root = bisection.findRoot();
+
+    // Output the root with 3 decimal places precision
+    cout << "Root: " << fixed << setprecision(3) << root << endl;
+
+    return 0;
+}
