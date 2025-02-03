@@ -1,0 +1,56 @@
+#include<bits/stdc++.h>
+using namespace std;
+class NewtonDiv{
+    private:
+    double a[100],b[100];
+    double total[100][100];
+    int n;
+    public:
+    void take_input(){
+        cout<<"Enter the total data "<<endl;
+        cin>>n;
+        cout<<"Enter the value of x & y"<<endl;
+        for(int i=0; i<n; i++){
+            cin>>a[i];
+            cin>>b[i];
+        }
+    }
+    void div_table(){
+        for(int i=0; i<n; i++){
+            total[0][i]=b[i];
+        }
+        for(int j=1; j<n; j++){
+            for(int i=0; i<n-j; i++){
+                total[i][j]=(total[i+1][j-1]-total[i][j-1])/(a[i+j]-a[i]);
+            }
+        }
+
+        cout << "\nDivided Difference Table:\n";
+        for (int i = 0; i < n; i++) {
+            cout << setw(10) << a[i] << " ";
+            for (int j = 0; j < n - i; j++) {
+                cout << setw(10) << fixed << setprecision(6) << total[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+    void NewRoot(double xp){
+        int p=1;
+        double ans = total[0][0];
+        for(int i=1; i<n; i++){
+            p=p*(xp-a[i-1]);
+            ans=ans+p*total[0][i];
+        }
+        cout<<"The ans is "<<ans <<endl;
+    }
+
+};
+int main(){
+    NewtonDiv NewtonDiv;
+    NewtonDiv.take_input();
+    NewtonDiv.div_table();
+    cout<<"Enter the value x for inter polation"<<endl;
+    double value;
+    cin>>value;
+    NewtonDiv.NewRoot(value);
+}
